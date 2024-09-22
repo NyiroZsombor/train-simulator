@@ -117,6 +117,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
         if (e.getKeyCode() == KeyEvent.VK_0) panel.action = "select";
         if (e.getKeyCode() == KeyEvent.VK_1) panel.action = "move";
         if (e.getKeyCode() == KeyEvent.VK_2) panel.action = "create";
+        if (e.getKeyCode() == KeyEvent.VK_R) panel.curves.clear();
     }
     
 }
