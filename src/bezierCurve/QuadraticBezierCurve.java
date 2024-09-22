@@ -4,18 +4,16 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class QuadraticBezierCurve {
-    public double[] start;
-    public double[] end;
+public class QuadraticBezierCurve extends LinearBezierCurve{
     public double[] control;
     public double length;
+
     LinearBezierCurve[] sections;
     
     public QuadraticBezierCurve(double[] start, double[] control, double[] end) {
-        this.start = start;
+        super(start, end);
         this.control = control;
         this.control = control;
-        this.end = end;
         sections = new LinearBezierCurve[2];
         sections[0] = new LinearBezierCurve(start, control);
         sections[1] = new LinearBezierCurve(control, end);
@@ -35,23 +33,14 @@ public class QuadraticBezierCurve {
         ).calculatePosition(t);
     }
 
-    public double[] calculateNormal(double t, int p) {
-        double[] pos0 = calculatePosition(t - 1d / p / 2);
-        double[] pos1 = calculatePosition(t + 1d / p / 2);
-        double[] diff = {pos0[0] - pos1[0], pos0[1] - pos1[1]};
-        double dist = Math.hypot(diff[0], diff[1]);
-        double[] tangent = {diff[0] / dist, diff[1] / dist};
-        double[] normal = {-tangent[1], tangent[0]};
-        return normal;
-    }
+    public static void render(Graphics2D g2, QuadraticBezierCurve curve, boolean rCurve, boolean rPoints, boolean rLines, boolean rNormals) {
 
-    public static void render(Graphics2D g2, QuadraticBezierCurve curve, boolean rCurve, boolean rPoints, boolean rLines, boolean rNormal) {
-        if (rCurve || rNormal) {
+        if (rCurve || rNormals) {
             int n = 10;
             int[] xPoints = new int[n + 1];
             int[] yPoints = new int[n + 1];
 
-            if (rNormal) {
+            if (rNormals) {
                 g2.setStroke(new BasicStroke(1));
                 g2.setColor(Color.BLACK);
             }
@@ -62,7 +51,7 @@ public class QuadraticBezierCurve {
                 xPoints[i] = (int)pos[0];
                 yPoints[i] = (int)pos[1];
 
-                if (t > 0 && rNormal) {
+                if (t > 0 && rNormals) {
                     int s = 30;
                     double[] normal = curve.calculateNormal(t - 1 / n / 2, n);
                     double[] diff = {xPoints[i - 1] - pos[0], yPoints[i - 1] - pos[1]};
