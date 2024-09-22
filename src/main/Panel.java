@@ -18,10 +18,11 @@ public class Panel extends JPanel implements Runnable {
     
     public boolean dragging = false;
 
-    ArrayList<int[]> lastPoints;
+    ArrayList<double[]> lastPoints;
     ArrayList<QuadraticBezierCurve> curves;
 
-    int[] selected;
+    double[] selected;
+    double t;
     boolean running = false;
     String action;
     Thread thread;
@@ -39,6 +40,7 @@ public class Panel extends JPanel implements Runnable {
         curves = new ArrayList<>();
         action = "create";
         font = new Font("Serif", 0, 24);
+        t = 0;
 
         addMouseListener(input);
         addMouseMotionListener(input);
@@ -53,9 +55,14 @@ public class Panel extends JPanel implements Runnable {
     public void run() {
         running = true;
         while (running) {
+            if (action.equals("running")) {
+                t += 10 / curves.get((int)t).length;
+                t %= 3;
+                //System.out.println(t);
+            }
             repaint();
             try {
-                Thread.sleep(10);
+                Thread.sleep(100);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -67,8 +74,16 @@ public class Panel extends JPanel implements Runnable {
         g2.clearRect(0, 0, windowWidth, windowHeigth);
 
         for (int i = 0; i < curves.size(); i++) {
-            //renderCurve(g2, curves.get(i));
             QuadraticBezierCurve.render(g2, curves.get(i), true, true, true);
+        }
+
+        if (action.equals("running")) {
+            int s = 16;
+            int s2 = s / 2;
+            double[] pos = curves.get((int)t).calculatePosition(t % 1);
+            g2.setColor(Color.RED);
+            g2.setStroke(new BasicStroke(3));
+            g2.drawArc((int)pos[0] - s2, (int)pos[1] - s2, s, s, 0, 360);
         }
 
         g2.setFont(font);
@@ -76,25 +91,5 @@ public class Panel extends JPanel implements Runnable {
         g2.drawString(action, 0 + 8, 12 + 8);
 
         g2.dispose();
-    }
-
-    public void renderCurve(Graphics2D g2, QuadraticBezierCurve curve) {
-        int n = 10;
-        int[] xPoints = new int[n];
-        int[] yPoints = new int[n];
-
-        for (int i = 0; i < n; i++) {
-            int[] point = curve.calculatePosition((double)i / (n - 1));
-            xPoints[i] = point[0];
-            yPoints[i] = point[1];
-        }
-
-        g2.setColor(Color.BLUE);
-        g2.setStroke(new BasicStroke(3));
-        g2.drawPolyline(xPoints, yPoints, n);
-        g2.setColor(Color.RED);
-        g2.drawArc(curve.start[0] - 5, curve.start[1] - 5, 10, 10, 0, 360);
-        g2.drawArc(curve.control[0] - 5, curve.control[1] - 5, 10, 10, 0, 360);
-        g2.drawArc(curve.end[0] - 5, curve.end[1] - 5, 10, 10, 0, 360);
     }
 }

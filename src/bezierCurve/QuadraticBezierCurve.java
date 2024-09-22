@@ -5,12 +5,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class QuadraticBezierCurve {
-    public int[] start;
-    public int[] end;
-    public int[] control;
+    public double[] start;
+    public double[] end;
+    public double[] control;
+    public double length;
     LinearBezierCurve[] sections;
     
-    public QuadraticBezierCurve(int[] start, int[] control, int[] end) {
+    public QuadraticBezierCurve(double[] start, double[] control, double[] end) {
         this.start = start;
         this.control = control;
         this.control = control;
@@ -18,9 +19,17 @@ public class QuadraticBezierCurve {
         sections = new LinearBezierCurve[2];
         sections[0] = new LinearBezierCurve(start, control);
         sections[1] = new LinearBezierCurve(control, end);
+        length = calculateLength(1000);
+        System.out.println(length);
     }
 
-    public int[] calculatePosition(double t) {
+    public double calculateLength(int p) {
+        double[] pos = calculatePosition(1d / p);
+        double[] diff = {pos[0] - start[0], pos[1] - start[1]};
+        return Math.hypot(diff[0], diff[1]) * p;
+    }
+
+    public double[] calculatePosition(double t) {
         return new LinearBezierCurve(
             sections[0].calculatePosition(t),
             sections[1].calculatePosition(t)
@@ -35,9 +44,9 @@ public class QuadraticBezierCurve {
     
             for (int i = 0; i <= n; i++) {
                 double t = (double)i / n;
-                int[] pos = curve.calculatePosition(t);
-                xPoints[i] = pos[0];
-                yPoints[i] = pos[1];
+                double[] pos = curve.calculatePosition(t);
+                xPoints[i] = (int)pos[0];
+                yPoints[i] = (int)pos[1];
             }
 
             g2.setStroke(new BasicStroke(3));
@@ -50,16 +59,16 @@ public class QuadraticBezierCurve {
             int s2 = s / 2;
             g2.setStroke(new BasicStroke(3));
             g2.setColor(Color.BLUE);
-            g2.drawArc(curve.start[0] - s2, curve.start[1] - s2, s, s, 0, 360);
-            g2.drawArc(curve.control[0] - s2, curve.control[1] - s2, s, s, 0, 360);
-            g2.drawArc(curve.end[0] - s2, curve.end[1] - s2, s, s, 0, 360);
+            g2.drawArc((int)curve.start[0] - s2, (int)curve.start[1] - s2, s, s, 0, 360);
+            g2.drawArc((int)curve.control[0] - s2, (int)curve.control[1] - s2, s, s, 0, 360);
+            g2.drawArc((int)curve.end[0] - s2, (int)curve.end[1] - s2, s, s, 0, 360);
         }
 
         if (rLines) {
             g2.setStroke(new BasicStroke(1));
             g2.setColor(Color.CYAN);
-            g2.drawLine(curve.start[0], curve.start[1], curve.control[0], curve.control[1]);
-            g2.drawLine(curve.control[0], curve.control[1], curve.end[0], curve.end[1]);
+            g2.drawLine((int)curve.start[0], (int)curve.start[1], (int)curve.control[0], (int)curve.control[1]);
+            g2.drawLine((int)curve.control[0], (int)curve.control[1], (int)curve.end[0], (int)curve.end[1]);
         }
     }
 }

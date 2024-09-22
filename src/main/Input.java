@@ -46,11 +46,11 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
         boolean select = selectNode();
 
         if (panel.action.equals("create")) {
-            int[] pos = new int[2];
+            double[] pos = new double[2];
 
             if (select) {
-                pos[0] = panel.selected[0];
-                pos[1] = panel.selected[1];
+                pos[0] = (int)panel.selected[0];
+                pos[1] = (int)panel.selected[1];
                 panel.selected = null;
             }
             else{
@@ -67,7 +67,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
     
                 panel.lastPoints.clear();
                 panel.repaint();
-                System.out.println("new curve");
             }
         }
         else if (panel.action.equals("move")) {
@@ -117,6 +116,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
         if (e.getKeyCode() == KeyEvent.VK_0) panel.action = "select";
         if (e.getKeyCode() == KeyEvent.VK_1) panel.action = "move";
         if (e.getKeyCode() == KeyEvent.VK_2) panel.action = "create";
+        if (e.getKeyCode() == KeyEvent.VK_3) panel.action = "running";
         if (e.getKeyCode() == KeyEvent.VK_R) panel.curves.clear();
     }
     
