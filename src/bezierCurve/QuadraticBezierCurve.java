@@ -20,7 +20,6 @@ public class QuadraticBezierCurve {
         sections[0] = new LinearBezierCurve(start, control);
         sections[1] = new LinearBezierCurve(control, end);
         length = calculateLength(1000);
-        System.out.println(length);
     }
 
     public double calculateLength(int p) {
@@ -36,22 +35,48 @@ public class QuadraticBezierCurve {
         ).calculatePosition(t);
     }
 
-    public static void render(Graphics2D g2, QuadraticBezierCurve curve, boolean rCurve, boolean rPoints, boolean rLines) {
-        if (rCurve) {
+    public double[] calculateNormal(double t, int p) {
+        double[] pos0 = calculatePosition(t - 1d / p / 2);
+        double[] pos1 = calculatePosition(t + 1d / p / 2);
+        double[] diff = {pos0[0] - pos1[0], pos0[1] - pos1[1]};
+        double dist = Math.hypot(diff[0], diff[1]);
+        double[] tangent = {diff[0] / dist, diff[1] / dist};
+        double[] normal = {-tangent[1], tangent[0]};
+        return normal;
+    }
+
+    public static void render(Graphics2D g2, QuadraticBezierCurve curve, boolean rCurve, boolean rPoints, boolean rLines, boolean rNormal) {
+        if (rCurve || rNormal) {
             int n = 10;
             int[] xPoints = new int[n + 1];
             int[] yPoints = new int[n + 1];
+
+            if (rNormal) {
+                g2.setStroke(new BasicStroke(1));
+                g2.setColor(Color.BLACK);
+            }
     
             for (int i = 0; i <= n; i++) {
                 double t = (double)i / n;
                 double[] pos = curve.calculatePosition(t);
                 xPoints[i] = (int)pos[0];
                 yPoints[i] = (int)pos[1];
+
+                if (t > 0 && rNormal) {
+                    int s = 30;
+                    double[] normal = curve.calculateNormal(t - 1 / n / 2, n);
+                    double[] diff = {xPoints[i - 1] - pos[0], yPoints[i - 1] - pos[1]};
+                    int[] lineStart = {(int)(pos[0] + diff[0] / 2), (int)(pos[1] + diff[1] / 2)};
+                    int[] lineEnd = {(int)(lineStart[0] + normal[0] * s), (int)(lineStart[1] + normal[1] * s)};
+                    g2.drawLine(lineStart[0], lineStart[1], lineEnd[0], lineEnd[1]);
+                }
             }
 
-            g2.setStroke(new BasicStroke(3));
-            g2.setColor(Color.BLACK);
-            g2.drawPolyline(xPoints, yPoints, n + 1);
+            if (rCurve) {
+                g2.setStroke(new BasicStroke(3));
+                g2.setColor(Color.BLACK);
+                g2.drawPolyline(xPoints, yPoints, n + 1);
+            }
         }
 
         if (rPoints) {

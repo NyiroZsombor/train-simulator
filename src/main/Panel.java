@@ -58,7 +58,6 @@ public class Panel extends JPanel implements Runnable {
             if (action.equals("running")) {
                 t += 10 / curves.get((int)t).length;
                 t %= 3;
-                //System.out.println(t);
             }
             repaint();
             try {
@@ -74,7 +73,7 @@ public class Panel extends JPanel implements Runnable {
         g2.clearRect(0, 0, windowWidth, windowHeigth);
 
         for (int i = 0; i < curves.size(); i++) {
-            QuadraticBezierCurve.render(g2, curves.get(i), true, true, true);
+            QuadraticBezierCurve.render(g2, curves.get(i), true, true, true, true);
         }
 
         if (action.equals("running")) {
