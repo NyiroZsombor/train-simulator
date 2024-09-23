@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import bezierCurve.Path;
 import bezierCurve.QuadraticBezierCurve;
 
 
@@ -58,16 +59,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
                 pos[1] = mousePos[1];
             }
             panel.lastPoints.add(pos);
-            if (panel.lastPoints.size() == 3) {
-                panel.curves.add(new QuadraticBezierCurve(
-                    panel.lastPoints.get(0),
-                    panel.lastPoints.get(1),
-                    panel.lastPoints.get(2)
-                ));
-    
-                panel.lastPoints.clear();
-                panel.repaint();
-            }
         }
         else if (panel.action.equals("move")) {
             if (select) panel.dragging = !panel.dragging;
@@ -117,7 +108,16 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
         if (e.getKeyCode() == KeyEvent.VK_1) panel.action = "move";
         if (e.getKeyCode() == KeyEvent.VK_2) panel.action = "create";
         if (e.getKeyCode() == KeyEvent.VK_3) panel.action = "running";
-        if (e.getKeyCode() == KeyEvent.VK_R) panel.curves.clear();
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            panel.curves.clear();
+            panel.paths.clear();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && panel.action.equals("create")) {
+            panel.paths.add(new Path(panel.lastPoints));
+
+            panel.lastPoints.clear();
+            panel.repaint();
+        }
     }
     
 }

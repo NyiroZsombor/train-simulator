@@ -1,5 +1,6 @@
 package main;
 
+import bezierCurve.Path;
 import bezierCurve.QuadraticBezierCurve;
 
 import java.awt.BasicStroke;
@@ -20,6 +21,7 @@ public class Panel extends JPanel implements Runnable {
 
     ArrayList<double[]> lastPoints;
     ArrayList<QuadraticBezierCurve> curves;
+    ArrayList<Path> paths;
 
     double[] selected;
     double t;
@@ -38,6 +40,7 @@ public class Panel extends JPanel implements Runnable {
         input = new Input(this);
         lastPoints = new ArrayList<>();
         curves = new ArrayList<>();
+        paths = new ArrayList<>();
         action = "create";
         font = new Font("Serif", 0, 24);
         t = 0;
@@ -76,6 +79,31 @@ public class Panel extends JPanel implements Runnable {
             QuadraticBezierCurve.render(g2, curves.get(i), true, true, true, true);
         }
 
+        for (int i = 0; i < paths.size(); i++) {
+            Path.render(g2, paths.get(i), true, true, true, true);
+        }
+
+        renderActivePoints(g2);
+        renderRunning(g2);
+
+        g2.setFont(font);
+        g2.setColor(Color.BLACK);
+        g2.drawString(action, 0 + 8, 12 + 8);
+
+        g2.dispose();
+    }
+
+    private void renderActivePoints(Graphics2D g2) {
+        int s = 10;
+        g2.setColor(Color.ORANGE);
+        g2.setStroke(new BasicStroke(3));
+        
+        for (int i = 0; i < lastPoints.size(); i++) {
+            g2.drawArc((int)lastPoints.get(i)[0] - s / 2, (int)lastPoints.get(i)[1] - s / 2, s, s, 0, 360);
+        }
+    }
+
+    private void renderRunning(Graphics2D g2) {
         if (action.equals("running")) {
             int s = 16;
             int s2 = s / 2;
@@ -84,11 +112,5 @@ public class Panel extends JPanel implements Runnable {
             g2.setStroke(new BasicStroke(3));
             g2.drawArc((int)pos[0] - s2, (int)pos[1] - s2, s, s, 0, 360);
         }
-
-        g2.setFont(font);
-        g2.setColor(Color.BLACK);
-        g2.drawString(action, 0 + 8, 12 + 8);
-
-        g2.dispose();
     }
 }
