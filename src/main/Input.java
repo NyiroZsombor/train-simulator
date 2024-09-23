@@ -104,7 +104,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_0) panel.action = "select";
         if (e.getKeyCode() == KeyEvent.VK_1) panel.action = "move";
         if (e.getKeyCode() == KeyEvent.VK_2) panel.action = "create";
         if (e.getKeyCode() == KeyEvent.VK_3) panel.action = "running";

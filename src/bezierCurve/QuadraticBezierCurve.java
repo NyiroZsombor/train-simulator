@@ -74,8 +74,9 @@ public class QuadraticBezierCurve extends LinearBezierCurve{
             g2.setStroke(new BasicStroke(3));
             g2.setColor(Color.BLUE);
             g2.drawArc((int)curve.start[0] - s2, (int)curve.start[1] - s2, s, s, 0, 360);
-            g2.drawArc((int)curve.control[0] - s2, (int)curve.control[1] - s2, s, s, 0, 360);
             g2.drawArc((int)curve.end[0] - s2, (int)curve.end[1] - s2, s, s, 0, 360);
+            g2.setColor(Color.RED);
+            g2.drawArc((int)curve.control[0] - s2, (int)curve.control[1] - s2, s, s, 0, 360);
         }
 
         if (rLines) {

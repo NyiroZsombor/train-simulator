@@ -26,6 +26,7 @@ public class Path {
             double[] ctrl = controls.get(i);
             double[] nextCtrl = controls.get((i + 1) % controls.size());
 
+            // TODO: optimize
             double[] prevDiff = {prevCtrl[0] - ctrl[0], prevCtrl[1] - ctrl[1]};
             double[] nextDiff = {nextCtrl[0] - ctrl[0], nextCtrl[1] - ctrl[1]};
             double[] prevMidPoint = {ctrl[0] + prevDiff[0] / 2, ctrl[1] + prevDiff[1] / 2};
