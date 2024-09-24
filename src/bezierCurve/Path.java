@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class Path {
-    ArrayList<QuadraticBezierCurve> sections;
+    public ArrayList<QuadraticBezierCurve> sections;
 
     public Path(ArrayList<double[]> controls) {
         if (controls.size() < 3) {
