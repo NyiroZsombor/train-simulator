@@ -27,6 +27,7 @@ public class Panel extends JPanel implements Runnable {
     Train train;
     TrainStop trainStop;
 
+    long startTime;
     double[] selected;
     double t;
     boolean running = false;
@@ -48,6 +49,7 @@ public class Panel extends JPanel implements Runnable {
         action = "create";
         font = new Font("Serif", 0, 24);
         t = 0;
+        startTime = System.nanoTime();
 
         addMouseListener(input);
         addMouseMotionListener(input);
@@ -74,6 +76,28 @@ public class Panel extends JPanel implements Runnable {
         }
     }
 
+    // TODO: optimize, delete
+    public int[] calculateTime(long elapsedNano) {
+        long milliSeconds = (int)(elapsedNano / 1_000_000);
+        long seconds = milliSeconds / 1_000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+        long weeks = days / 7;
+        int years = (int)(weeks / 52);
+
+        int[] time = {
+            (int)(milliSeconds % 1_000),
+            (int)(seconds % 60),
+            (int)(minutes % 60),
+            (int)(hours % 24),
+            (int)(days % 7),
+            (int)(weeks % 52),
+            years
+        };
+        return time;
+    }
+
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         g2.clearRect(0, 0, windowWidth, windowHeigth);
@@ -94,7 +118,8 @@ public class Panel extends JPanel implements Runnable {
 
         g2.setFont(font);
         g2.setColor(Color.BLACK);
-        g2.drawString(action, 0 + 8, 12 + 8);
+        g2.drawString(action, 400 + 8, 12 + 8);
+        renderTimeAndDate(g2);
 
         g2.dispose();
     }
@@ -107,5 +132,14 @@ public class Panel extends JPanel implements Runnable {
         for (int i = 0; i < lastPoints.size(); i++) {
             g2.drawArc((int)lastPoints.get(i)[0] - s / 2, (int)lastPoints.get(i)[1] - s / 2, s, s, 0, 360);
         }
+    }
+
+    private void renderTimeAndDate(Graphics2D g2) {
+        int[] time = calculateTime(System.nanoTime() - startTime);
+
+        g2.setFont(font);
+        g2.setColor(Color.BLACK);
+        g2.drawString(time[3] + ":" + time[2] + ":" + time[1] + "." + time[0], 8, 12 + 8);
+        g2.drawString(time[6] + ", week: " + time[5] + " day: " + time[4], 8, 12 + 32);
     }
 }

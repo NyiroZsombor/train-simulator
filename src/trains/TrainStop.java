@@ -7,18 +7,18 @@ import bezierCurve.Path;
 import bezierCurve.QuadraticBezierCurve;
 
 public class TrainStop {
-    Path path;
-    int sectionIdx;
+    public Path path;
+    public int sectionIdx;
+    public double t;
     QuadraticBezierCurve section;
-    double t;
     double[] normal;
     double[] pos;
     
     public TrainStop(Path path, int sectionIdx, double t) {
         this.path = path;
         this.sectionIdx = sectionIdx;
-        section = path.sections.get(sectionIdx);
         this.t = t;
+        section = path.sections.get(sectionIdx);
         normal = section.calculateNormal(t, 100);
         pos = section.calculatePosition(t);
     }

@@ -43,6 +43,11 @@ public class Train {
             section = path.sections.get(sectionIdx);
             t -= 1;
         }
+
+        // t_s = ((x - x_0 - (v_0*v_0)) / 2a_0 / v_0)
+        // t_s - time to start decelerating
+        // x, x_0 current and starting position
+        // a_0, v_0 deceleration and starting veloctiy
     }
 
     public void render(Graphics2D g2) {
