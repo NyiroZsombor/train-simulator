@@ -17,29 +17,31 @@ public class Train {
     double absVelocity;
     public double acceleration;
     double friction;
+    double speedLimit;
 
     public Train(Path path, int sectionIdx, double t) {
         this.path = path;
         this.sectionIdx = sectionIdx;
         this.t = t;
         section = path.sections.get(sectionIdx);
-        speed = 50;
+        speed = 12;
         velocity = 0;
         absVelocity = velocity / section.length;
         acceleration = 0;
-        friction = 0.1;
+        //friction = 0.008;
+        speedLimit = 160;
     }
 
     public void update(double dt) {
         velocity += acceleration * dt;
-        velocity *= 1 / (1 + friction);
+        //velocity *= 1 / (1 + friction);
+        velocity = Math.min(velocity, speedLimit);
         absVelocity = velocity / section.length;
         t += absVelocity * dt;
         if (t > 1) {
             sectionIdx = (sectionIdx + 1) % path.sections.size();
             section = path.sections.get(sectionIdx);
             t -= 1;
-            System.out.println(velocity / section.length);
         }
     }
 
@@ -47,11 +49,10 @@ public class Train {
         double[] pos = section.calculatePosition(t);
         int s = 20;
 
-        g2.setColor(Color.RED);
-        g2.setStroke(new BasicStroke(3));
-        g2.drawArc((int)pos[0] - s / 2, (int)pos[1] - s / 2, s, s, 0, 360);
+        g2.setColor(Color.GREEN);
+        g2.fillArc((int)pos[0] - s / 2, (int)pos[1] - s / 2, s, s, 0, 360);
 
-        renderSpeed(g2);
+        //renderSpeed(g2);
     }
 
     public void renderSpeed(Graphics2D g2) {

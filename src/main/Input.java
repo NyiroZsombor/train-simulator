@@ -108,9 +108,9 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
         if (e.getKeyCode() == KeyEvent.VK_1) panel.action = "move";
         if (e.getKeyCode() == KeyEvent.VK_2) panel.action = "create";
         if (e.getKeyCode() == KeyEvent.VK_3) {
-            panel.action = "running";
             panel.train = new Train(panel.paths.get(0), 0, 0);
             panel.train.acceleration = panel.train.speed;
+            panel.action = "running";
         }
         if (e.getKeyCode() == KeyEvent.VK_R) {
             panel.curves.clear();

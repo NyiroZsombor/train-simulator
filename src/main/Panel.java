@@ -103,15 +103,4 @@ public class Panel extends JPanel implements Runnable {
             g2.drawArc((int)lastPoints.get(i)[0] - s / 2, (int)lastPoints.get(i)[1] - s / 2, s, s, 0, 360);
         }
     }
-
-    private void renderRunning(Graphics2D g2) {
-        if (action.equals("running")) {
-            int s = 16;
-            int s2 = s / 2;
-            double[] pos = curves.get((int)t).calculatePosition(t % 1);
-            g2.setColor(Color.RED);
-            g2.setStroke(new BasicStroke(3));
-            g2.drawArc((int)pos[0] - s2, (int)pos[1] - s2, s, s, 0, 360);
-        }
-    }
 }

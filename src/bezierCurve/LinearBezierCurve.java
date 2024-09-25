@@ -9,6 +9,21 @@ public class LinearBezierCurve {
         this.end = end;
     }
 
+    public double calculateLength(int p) {
+        double length = 0;
+        double[] pos = start.clone();
+
+        for (int i = 1; i <= p; i++) {
+            double[] currentPos = calculatePosition((double)i / p);
+            double[] diff = {currentPos[0] - pos[0], currentPos[1] - pos[1]};
+            
+            length += Math.hypot(diff[0], diff[1]);
+            pos = currentPos;
+        }
+
+        return length;
+    }
+
     public double[] calculatePosition(double t) {
         double[] pos = new double[2];
         pos[0] = ((end[0] - start[0])*t) + start[0];

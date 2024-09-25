@@ -17,13 +17,7 @@ public class QuadraticBezierCurve extends LinearBezierCurve{
         sections = new LinearBezierCurve[2];
         sections[0] = new LinearBezierCurve(start, control);
         sections[1] = new LinearBezierCurve(control, end);
-        length = calculateLength(1000);
-    }
-
-    public double calculateLength(int p) {
-        double[] pos = calculatePosition(1d / p);
-        double[] diff = {pos[0] - start[0], pos[1] - start[1]};
-        return Math.hypot(diff[0], diff[1]) * p;
+        length = calculateLength(100);
     }
 
     public double[] calculatePosition(double t) {
