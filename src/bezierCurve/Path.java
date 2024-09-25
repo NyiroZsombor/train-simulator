@@ -13,10 +13,10 @@ public class Path {
             return;
         }
 
-        sections = createSections(controls);
+        sections = createClosedSections(controls);
     }
 
-    private ArrayList<QuadraticBezierCurve> createSections(ArrayList<double[]> controls) {
+    private ArrayList<QuadraticBezierCurve> createClosedSections(ArrayList<double[]> controls) {
         ArrayList<QuadraticBezierCurve> result = new ArrayList<>();
 
         for (int i = 0; i < controls.size(); i++) {

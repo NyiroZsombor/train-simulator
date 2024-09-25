@@ -9,6 +9,7 @@ import java.awt.event.MouseMotionListener;
 import bezierCurve.Path;
 import bezierCurve.QuadraticBezierCurve;
 import trains.Train;
+import trains.TrainStop;
 
 
 public class Input implements KeyListener, MouseListener, MouseMotionListener {
@@ -108,6 +109,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
         if (e.getKeyCode() == KeyEvent.VK_1) panel.action = "move";
         if (e.getKeyCode() == KeyEvent.VK_2) panel.action = "create";
         if (e.getKeyCode() == KeyEvent.VK_3) {
+            panel.trainStop = new TrainStop(panel.paths.get(0), 5, 0.7);
             panel.train = new Train(panel.paths.get(0), 0, 0);
             panel.train.acceleration = panel.train.speed;
             panel.action = "running";

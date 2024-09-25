@@ -37,7 +37,7 @@ public class LinearBezierCurve {
         double[] diff = {pos0[0] - pos1[0], pos0[1] - pos1[1]};
         double dist = Math.hypot(diff[0], diff[1]);
         double[] tangent = {diff[0] / dist, diff[1] / dist};
-        double[] normal = {-tangent[1], tangent[0]};
+        double[] normal = {tangent[1], -tangent[0]};
         return normal;
     }
 }

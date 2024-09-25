@@ -1,0 +1,5 @@
+package trains;
+
+class Schedule {
+    
+}

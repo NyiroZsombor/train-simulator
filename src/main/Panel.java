@@ -3,6 +3,7 @@ package main;
 import bezierCurve.Path;
 import bezierCurve.QuadraticBezierCurve;
 import trains.Train;
+import trains.TrainStop;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -24,6 +25,7 @@ public class Panel extends JPanel implements Runnable {
     ArrayList<QuadraticBezierCurve> curves;
     ArrayList<Path> paths;
     Train train;
+    TrainStop trainStop;
 
     double[] selected;
     double t;
@@ -85,7 +87,10 @@ public class Panel extends JPanel implements Runnable {
         }
 
         renderActivePoints(g2);
-        if (action.equals("running")) train.render(g2);
+        if (action.equals("running")) {
+            trainStop.render(g2);
+            train.render(g2);
+        }
 
         g2.setFont(font);
         g2.setColor(Color.BLACK);
